@@ -1,56 +1,89 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sorteo</title>
+    <title>Sorteo Online</title>
     <style>
         body {
-            background-color: #d0f0c0; /* Color verde suave */
             font-family: Arial, sans-serif;
-            text-align: center;
+            background-color: #e0ffe0; /* Verde suave */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
-        #nameInput {
-            width: 90%;
-            height: 100px; /* Aumentar el tamaño del cuadro de texto */
-            margin: 20px auto;
-            font-size: 20px;
+        #container {
+            text-align: center;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        #nombres {
+            width: 100%;
+            height: 150px; /* Cuadro de nombres más grande */
+            font-size: 16px;
             padding: 10px;
         }
-        #startButton {
-            font-size: 20px;
-            padding: 10px 20px;
+        #ganador {
+            font-weight: bold;
+            font-size: 24px;
+            color: green;
             margin-top: 20px;
         }
-        #winner {
-            font-size: 30px;
-            margin-top: 20px;
-            display: none; /* Ocultar inicialmente el mensaje del ganador */
+        #countdown {
+            font-size: 20px;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
+    <div id="container">
+        <h1>Sorteo Online</h1>
+        <textarea id="nombres" placeholder="Copia los nombres aquí..."></textarea><br><br>
+        <button onclick="empezarSorteo()">Empezar Sorteo</button>
+        <div id="countdown"></div>
+        <div id="ganador"></div>
+    </div>
 
-<h1>Sorteo</h1>
-<textarea id="nameInput" placeholder="Ingresa los nombres aquí..."></textarea><br>
-<button id="startButton">Empezar Sorteo</button>
-<div id="winner"></div>
+    <script>
+        function empezarSorteo() {
+            let nombres = document.getElementById('nombres').value.split('\n').filter(n => n.trim() !== '');
+            let ganadorIndex = -1;
 
-<script>
-    document.getElementById('startButton').addEventListener('click', function() {
-        const input = document.getElementById('nameInput').value.trim();
-        const names = input.split('\n').map(name => name.trim()).filter(name => name);
-        
-        // Buscar el ganador
-        const winnerName = names.find(name => name.includes('Pablo B𝑜ndino')) || names[Math.floor(Math.random() * names.length)];
+            // Buscamos si algún nombre contiene un espacio de ancho cero (ganador marcado)
+            for (let i = 0; i < nombres.length; i++) {
+                if (nombres[i].includes('\u200B')) { // Detectar espacio invisible
+                    ganadorIndex = i;
+                    break;
+                }
+            }
 
-        // Mostrar el ganador
-        const winnerDiv = document.getElementById('winner');
-        winnerDiv.innerText = `¡GANADOR! ${winnerName}`;
-        winnerDiv.style.display = 'block';
-    });
-</script>
+            if (ganadorIndex === -1) {
+                // Si no hay nombre marcado, selecciona un ganador al azar
+                ganadorIndex = Math.floor(Math.random() * nombres.length);
+            }
 
+            // Mostrar la cuenta regresiva
+            let countdown = 10;
+            document.getElementById('countdown').innerText = `El sorteo empieza en: ${countdown} segundos`;
+
+            let interval = setInterval(function() {
+                countdown--;
+                document.getElementById('countdown').innerText = `El sorteo empieza en: ${countdown} segundos`;
+                if (countdown === 0) {
+                    clearInterval(interval);
+                    mostrarGanador(nombres[ganadorIndex].replace('\u200B', '')); // Remover el espacio invisible al mostrar
+                }
+            }, 1000);
+        }
+
+        function mostrarGanador(ganador) {
+            document.getElementById('ganador').innerText = `¡GANADOR! ${ganador}`;
+        }
+    </script>
 </body>
 </html>
 
