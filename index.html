@@ -15,7 +15,7 @@
             margin: 0;
             overflow: hidden;
             position: relative;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><defs><pattern id="pattern" patternUnits="userSpaceOnUse" width="20" height="20"><path d="M 10 0 L 20 10 L 10 20 L 0 10 Z" fill="rgba(255, 255, 255, 0.2)"/></pattern></defs><rect width="100%" height="100%" fill="url(#pattern)"/></svg>'); /* Cuadriculado de rombos */
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><defs><pattern id="pattern" patternUnits="userSpaceOnUse" width="20" height="20"><path d="M 10 0 L 20 10 L 10 20 L 0 10 Z" fill="rgba(255, 255, 255, 0.1)"/></pattern></defs><rect width="100%" height="100%" fill="url(#pattern)"/></svg>'); /* Cuadriculado de rombos */
         }
         #container {
             text-align: center;
@@ -28,13 +28,14 @@
         }
         #nombres {
             width: 100%;
-            height: 200px;
-            font-size: 18px;
+            height: 300px; /* Aumentar altura */
+            font-size: 20px; /* Aumentar tamaño de texto */
             padding: 10px;
             background-color: #ffa500; /* Cuadro de texto naranja */
             border: 1px solid #ccc;
             border-radius: 4px;
             z-index: 1; /* Asegurarse de que el cuadro de texto esté por encima */
+            overflow-y: auto; /* Permitir desplazamiento si hay muchos nombres */
         }
         .nombre {
             padding: 5px;
@@ -77,10 +78,10 @@
             background-size: contain;
             background-repeat: no-repeat;
         }
-        .regalo.tl { top: -20px; left: -20px; }
-        .regalo.tr { top: -20px; right: -20px; }
-        .regalo.bl { bottom: -20px; left: -20px; }
-        .regalo.br { bottom: -20px; right: -20px; }
+        .regalo.tl { top: -30px; left: -30px; } /* Esquina superior izquierda */
+        .regalo.tr { top: -30px; right: -30px; } /* Esquina superior derecha */
+        .regalo.bl { bottom: -30px; left: -30px; } /* Esquina inferior izquierda */
+        .regalo.br { bottom: -30px; right: -30px; } /* Esquina inferior derecha */
     </style>
 </head>
 <body>
