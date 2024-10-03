@@ -24,6 +24,7 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             position: relative;
             width: 60%; /* Cuadro de texto más grande */
+            overflow: hidden; /* Para evitar que los globos y regalos se superpongan */
         }
         #nombres {
             width: 100%;
@@ -79,9 +80,13 @@
         }
         /* Decoraciones de globos y regalos */
         .balloon {
+            width: 60px; /* Tamaño de los globos */
+            height: 80px;
             background-image: url('https://img.icons8.com/emoji/96/000000/balloon-emoji.png');
         }
         .gift {
+            width: 80px; /* Tamaño de los regalos */
+            height: 80px;
             background-image: url('https://img.icons8.com/emoji/96/000000/wrapped-gift.png');
         }
         @keyframes explode {
@@ -97,41 +102,22 @@
         <button onclick="empezarSorteo()">Empezar Sorteo</button>
         <button onclick="reiniciarSorteo()">Reiniciar Sorteo</button> <!-- Botón para reiniciar -->
         <div id="ganador"></div>
+
+        <!-- Regalos y globos en las esquinas -->
+        <div class="gift" style="top: -40px; left: -40px;"></div>
+        <div class="gift" style="top: -40px; right: -40px;"></div>
+        <div class="gift" style="bottom: -40px; left: -40px;"></div>
+        <div class="gift" style="bottom: -40px; right: -40px;"></div>
+        <div class="balloon" style="top: -80px; left: -20px;"></div>
+        <div class="balloon" style="top: -80px; right: -20px;"></div>
+        <div class="balloon" style="bottom: -80px; left: -20px;"></div>
+        <div class="balloon" style="bottom: -80px; right: -20px;"></div>
     </div>
 
     <!-- Números de la cuenta regresiva en el centro de la pantalla -->
     <div id="countdown"></div>
 
     <script>
-        // Función para crear decoraciones (globos y regalos) en posiciones fijas
-        function crearDecoraciones() {
-            const positions = [
-                {left: '5%', top: '5%', type: 'balloon'},
-                {left: '85%', top: '5%', type: 'gift'},
-                {left: '30%', top: '40%', type: 'balloon'},
-                {left: '70%', top: '60%', type: 'gift'},
-                {left: '15%', top: '70%', type: 'gift'},
-                {left: '50%', top: '80%', type: 'balloon'},
-                {left: '90%', top: '80%', type: 'gift'},
-                {left: '40%', top: '10%', type: 'balloon'},
-                {left: '10%', top: '20%', type: 'gift'},
-                {left: '60%', top: '25%', type: 'balloon'}
-            ];
-
-            // Crear y posicionar cada decoración
-            positions.forEach(pos => {
-                const decoration = document.createElement('div');
-                decoration.classList.add('decorations', pos.type);
-                decoration.style.left = pos.left;
-                decoration.style.top = pos.top;
-                decoration.style.transform = 'translate(-50%, -50%)'; // Centrar la decoración
-                document.body.appendChild(decoration);
-            });
-        }
-
-        // Llamar a la función para crear decoraciones al cargar la página
-        window.onload = crearDecoraciones;
-
         function empezarSorteo() {
             let nombres = document.getElementById('nombres').value.split('\n').filter(n => n.trim() !== '');
             let ganadorIndex = -1;
@@ -195,4 +181,5 @@
     </script>
 </body>
 </html>
+
 
