@@ -51,7 +51,7 @@
         }
         #countdown {
             font-weight: bold;
-            font-size: 72px;
+            font-size: 144px; /* Doble tamaño de los números */
             color: red;
             position: absolute;
             top: 50%;
@@ -71,52 +71,16 @@
         }
         .decorations {
             position: absolute;
-            width: 100px;
-            height: 100px;
+            width: 50px; /* Tamaño de globos y regalos */
+            height: 50px;
             background-size: contain;
             background-repeat: no-repeat;
         }
-        #balloon1, #balloon2, #balloon3, #balloon4, #gift1, #gift2, #gift3, #gift4 {
-            z-index: 1; /* Detrás del cuadro */
-        }
-        #balloon1 {
-            top: 10%;
-            left: -10%;
+        /* Decoraciones de globos y regalos */
+        #balloon {
             background-image: url('https://img.icons8.com/emoji/96/000000/balloon-emoji.png');
         }
-        #balloon2 {
-            top: 20%;
-            right: -10%;
-            background-image: url('https://img.icons8.com/emoji/96/000000/balloon-emoji.png');
-        }
-        #balloon3 {
-            bottom: 10%;
-            left: -10%;
-            background-image: url('https://img.icons8.com/emoji/96/000000/balloon-emoji.png');
-        }
-        #balloon4 {
-            bottom: 20%;
-            right: -10%;
-            background-image: url('https://img.icons8.com/emoji/96/000000/balloon-emoji.png');
-        }
-        #gift1 {
-            bottom: 5%;
-            left: 10%;
-            background-image: url('https://img.icons8.com/emoji/96/000000/wrapped-gift.png');
-        }
-        #gift2 {
-            bottom: 5%;
-            right: 10%;
-            background-image: url('https://img.icons8.com/emoji/96/000000/wrapped-gift.png');
-        }
-        #gift3 {
-            top: 5%;
-            left: 10%;
-            background-image: url('https://img.icons8.com/emoji/96/000000/wrapped-gift.png');
-        }
-        #gift4 {
-            top: 5%;
-            right: 10%;
+        #gift {
             background-image: url('https://img.icons8.com/emoji/96/000000/wrapped-gift.png');
         }
         @keyframes explode {
@@ -136,17 +100,32 @@
     <!-- Números de la cuenta regresiva en el centro de la pantalla -->
     <div id="countdown"></div>
 
-    <!-- Decoraciones alrededor del cuadro -->
-    <div id="balloon1" class="decorations"></div>
-    <div id="balloon2" class="decorations"></div>
-    <div id="balloon3" class="decorations"></div>
-    <div id="balloon4" class="decorations"></div>
-    <div id="gift1" class="decorations"></div>
-    <div id="gift2" class="decorations"></div>
-    <div id="gift3" class="decorations"></div>
-    <div id="gift4" class="decorations"></div>
-
     <script>
+        // Función para crear decoraciones (globos y regalos) aleatoriamente
+        function crearDecoraciones() {
+            const numDecoraciones = 20; // Número total de decoraciones
+            for (let i = 0; i < numDecoraciones; i++) {
+                const decoration = document.createElement('div');
+                decoration.classList.add('decorations');
+                
+                // Alternar entre globos y regalos
+                if (Math.random() < 0.5) {
+                    decoration.id = 'balloon';
+                } else {
+                    decoration.id = 'gift';
+                }
+
+                // Posicionar decoraciones aleatoriamente
+                decoration.style.left = `${Math.random() * 100}%`;
+                decoration.style.top = `${Math.random() * 100}%`;
+                decoration.style.transform = 'translate(-50%, -50%)'; // Centrar la decoración
+                document.body.appendChild(decoration);
+            }
+        }
+
+        // Llamar a la función para crear decoraciones al cargar la página
+        window.onload = crearDecoraciones;
+
         function empezarSorteo() {
             let nombres = document.getElementById('nombres').value.split('\n').filter(n => n.trim() !== '');
             let ganadorIndex = -1;
@@ -203,3 +182,4 @@
     </script>
 </body>
 </html>
+
