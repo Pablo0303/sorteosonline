@@ -53,9 +53,9 @@
             let nombres = document.getElementById('nombres').value.split('\n').filter(n => n.trim() !== '');
             let ganadorIndex = -1;
 
-            // Buscamos si algún nombre contiene un espacio de ancho cero (ganador marcado)
+            // Buscamos si algún nombre contiene un espacio al final
             for (let i = 0; i < nombres.length; i++) {
-                if (nombres[i].includes('\u200B')) { // Detectar espacio invisible
+                if (nombres[i].endsWith(' ')) { // Detectar espacio normal al final
                     ganadorIndex = i;
                     break;
                 }
@@ -75,7 +75,7 @@
                 document.getElementById('countdown').innerText = `El sorteo empieza en: ${countdown} segundos`;
                 if (countdown === 0) {
                     clearInterval(interval);
-                    mostrarGanador(nombres[ganadorIndex].replace('\u200B', '')); // Remover el espacio invisible al mostrar
+                    mostrarGanador(nombres[ganadorIndex].trim()); // Remover el espacio al final al mostrar
                 }
             }, 1000);
         }
@@ -86,5 +86,4 @@
     </script>
 </body>
 </html>
-
 
