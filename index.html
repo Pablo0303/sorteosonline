@@ -3,53 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sorteos Online</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 50px;
-        }
-        #result {
-            font-size: 24px;
-            font-weight: bold;
-            margin-top: 20px;
-        }
-        #countdown {
-            font-size: 48px;
-            margin-top: 20px;
-        }
-    </style>
+    <title>Hola Mundo</title>
 </head>
 <body>
-    <h1>Sorteo Online</h1>
-    <textarea id="names" placeholder="Escribe los nombres, uno por línea..." rows="10" cols="30"></textarea><br><br>
-    <button onclick="startDraw()">Iniciar sorteo</button>
-
-    <div id="countdown"></div>
-    <div id="result"></div>
-
-    <script>
-        function startDraw() {
-            const names = document.getElementById('names').value.split('\n').filter(name => name.trim() !== '');
-            if (names.length === 0) {
-                alert('Por favor, introduce algunos nombres.');
-                return;
-            }
-
-            let countdown = 10;
-            document.getElementById('countdown').textContent = countdown;
-            const countdownInterval = setInterval(() => {
-                countdown--;
-                document.getElementById('countdown').textContent = countdown;
-                if (countdown === 0) {
-                    clearInterval(countdownInterval);
-                    const winner = names[Math.floor(Math.random() * names.length)];
-                    document.getElementById('result').textContent = `¡El ganador es: ${winner}!`;
-                    document.getElementById('countdown').textContent = '';
-                }
-            }, 1000);
-        }
-    </script>
+    <h1>Hola Mundo</h1>
 </body>
 </html>
