@@ -13,42 +13,30 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            overflow: hidden;
-            position: relative;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><defs><pattern id="pattern" patternUnits="userSpaceOnUse" width="20" height="20"><path d="M 10 0 L 20 10 L 10 20 L 0 10 Z" fill="rgba(255, 255, 255, 0.1)"/></pattern></defs><rect width="100%" height="100%" fill="url(#pattern)"/></svg>'); /* Cuadriculado de rombos */
         }
         #container {
             text-align: center;
-            background-color: #ffa500; /* Fondo naranja completo */
+            background-color: white;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             position: relative;
-            width: 60%; /* Cuadro de texto más grande */
         }
         #nombres {
             width: 100%;
-            height: 300px; /* Aumentar altura */
-            font-size: 20px; /* Aumentar tamaño de texto */
+            height: 350px; /* Cuadro de nombres más grande */
+            font-size: 18px;
             padding: 10px;
-            background-color: #ffa500; /* Cuadro de texto naranja */
+            background-color: #ffa500; /* Naranja */
             border: 1px solid #ccc;
             border-radius: 4px;
-            z-index: 1; /* Asegurarse de que el cuadro de texto esté por encima */
-            overflow-y: auto; /* Permitir desplazamiento si hay muchos nombres */
-        }
-        .nombre {
-            padding: 5px;
-        }
-        .naranja-claro {
-            background-color: #ffcc80; /* Naranja más claro */
         }
         #ganador {
             font-weight: bold;
             font-size: 48px;
             color: green;
             margin-top: 20px;
-            display: none; /* Oculto al inicio */
+            display: none; /* Al inicio no se muestra */
             position: absolute;
             top: 50%;
             left: 50%;
@@ -59,55 +47,20 @@
             border-radius: 10px;
         }
         #countdown {
-            font-weight: bold;
-            font-size: 144px; /* Doble tamaño de los números */
-            color: red;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            display: none; /* Oculto al inicio */
-            z-index: 9;
-            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5); /* Efecto 3D */
+            font-size: 24px;
+            margin-top: 10px;
         }
-        .regalo {
-            position: absolute;
-            width: 50px; /* Tamaño del regalo */
-            height: 50px;
-            background-image: url('https://cdn-icons-png.flaticon.com/512/1911/1911385.png'); /* URL del ícono del regalo */
-            background-size: contain;
-            background-repeat: no-repeat;
-        }
-        .regalo.tl { top: -30px; left: -30px; } /* Esquina superior izquierda */
-        .regalo.tr { top: -30px; right: -30px; } /* Esquina superior derecha */
-        .regalo.bl { bottom: -30px; left: -30px; } /* Esquina inferior izquierda */
-        .regalo.br { bottom: -30px; right: -30px; } /* Esquina inferior derecha */
-
-        /* Estilos para fuegos artificiales */
         .firework {
+            width: 5px;
+            height: 5px;
+            background-color: red;
             position: absolute;
-            width: 50px;
-            height: 50px;
-            background-image: url('https://cdn-icons-png.flaticon.com/512/2922/2922769.png'); /* URL de fuegos artificiales */
-            background-size: contain;
-            background-repeat: no-repeat;
-            z-index: 20; /* Asegurarse de que los fuegos artificiales estén por encima */
-            animation: explode 1s forwards;
-            opacity: 0; /* Ocultar inicialmente */
+            border-radius: 50%;
+            animation: explode 10s ease-out forwards; /* Duración de 10 segundos */
         }
-
         @keyframes explode {
-            0% {
-                opacity: 1;
-                transform: scale(0);
-            }
-            50% {
-                opacity: 1;
-                transform: scale(1.5);
-            }
-            100% {
-                opacity: 0;
-            }
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(100); opacity: 0; }
         }
     </style>
 </head>
@@ -116,18 +69,9 @@
         <h1>Sorteo Online</h1>
         <textarea id="nombres" placeholder="Copia los nombres aquí..."></textarea><br><br>
         <button onclick="empezarSorteo()">Empezar Sorteo</button>
-        <button onclick="reiniciarSorteo()">Reiniciar Sorteo</button> <!-- Botón para reiniciar -->
+        <div id="countdown"></div>
         <div id="ganador"></div>
-
-        <!-- Regalos en las esquinas del cuadro de texto -->
-        <div class="regalo tl"></div>
-        <div class="regalo tr"></div>
-        <div class="regalo bl"></div>
-        <div class="regalo br"></div>
     </div>
-
-    <!-- Números de la cuenta regresiva en el centro de la pantalla -->
-    <div id="countdown"></div>
 
     <script>
         function empezarSorteo() {
@@ -149,51 +93,38 @@
 
             // Mostrar la cuenta regresiva
             let countdown = 10;
-            document.getElementById('countdown').innerText = countdown;
-            document.getElementById('countdown').style.display = 'block'; // Mostrar el contador
+            document.getElementById('countdown').innerText = `El sorteo empieza en: ${countdown} segundos`;
 
             let interval = setInterval(function() {
                 countdown--;
-                document.getElementById('countdown').innerText = countdown;
+                document.getElementById('countdown').innerText = `El sorteo empieza en: ${countdown} segundos`;
                 if (countdown === 0) {
                     clearInterval(interval);
-                    document.getElementById('countdown').style.display = 'none'; // Ocultar el contador
                     mostrarGanador(nombres[ganadorIndex].trim()); // Remover el espacio al final al mostrar
                 }
             }, 1000);
         }
 
         function mostrarGanador(ganador) {
+            document.getElementById('countdown').style.display = 'none'; // Ocultar la cuenta regresiva
             document.getElementById('ganador').innerText = `¡GANADOR! ${ganador}`;
             document.getElementById('ganador').style.display = 'block';
-            mostrarFuegosArtificiales(); // Llamar a la función de fuegos artificiales
+            lanzarFuegosArtificiales();
         }
 
-        function mostrarFuegosArtificiales() {
-            for (let i = 0; i < 5; i++) {
+        function lanzarFuegosArtificiales() {
+            for (let i = 0; i < 50; i++) { // Mayor cantidad de fuegos artificiales
+                const firework = document.createElement('div');
+                firework.classList.add('firework');
+                firework.style.left = `${Math.random() * 100}%`;
+                firework.style.top = `${Math.random() * 100}%`;
+                document.body.appendChild(firework);
+
+                // Eliminar el fuego artificial después de la animación (10 segundos)
                 setTimeout(() => {
-                    crearFuegoArtificial();
-                }, i * 200); // Espaciar los fuegos artificiales
+                    firework.remove();
+                }, 10000);
             }
-        }
-
-        function crearFuegoArtificial() {
-            const firework = document.createElement('div');
-            firework.className = 'firework';
-            firework.style.top = `${Math.random() * (window.innerHeight - 100)}px`;
-            firework.style.left = `${Math.random() * (window.innerWidth - 100)}px`;
-            document.body.appendChild(firework);
-
-            // Eliminar el fuego artificial después de 1 segundo
-            setTimeout(() => {
-                firework.remove();
-            }, 1000);
-        }
-
-        function reiniciarSorteo() {
-            document.getElementById('nombres').value = ''; // Vaciar la lista de participantes
-            document.getElementById('ganador').style.display = 'none'; // Ocultar el ganador
-            document.getElementById('countdown').style.display = 'none'; // Ocultar el contador
         }
     </script>
 </body>
