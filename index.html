@@ -1,11 +1,85 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hola Mundo</title>
+    <title>Sorteo Online</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        #result {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        #countdown {
+            font-size: 48px;
+            margin-top: 20px;
+        }
+        .winner {
+            font-family: 'Courier New', Courier, monospace; /* Fuente diferente para el ganador */
+        }
+    </style>
 </head>
 <body>
-    <h1>Hola Mundo</h1>
+    <h1>Sorteo Online</h1>
+    <textarea id="names" placeholder="Escribe los nombres, uno por línea..." rows="10" cols="30"></textarea><br><br>
+    <button onclick="startDraw()">Empezar Sorteo</button>
+    <button onclick="chooseWinner()">Elegir Ganador Oculto</button>
+
+    <div id="countdown"></div>
+    <div id="result"></div>
+
+    <script>
+        let winnerName = ""; // Variable para almacenar el nombre del ganador
+
+        function startDraw() {
+            const names = document.getElementById('names').value.split('\n').filter(name => name.trim() !== '');
+            if (names.length === 0) {
+                alert('Por favor, introduce algunos nombres.');
+                return;
+            }
+
+            // Elegir un ganador aleatorio
+            winnerName = names[Math.floor(Math.random() * names.length)];
+
+            let countdown = 10;
+            document.getElementById('countdown').textContent = countdown;
+            const countdownInterval = setInterval(() => {
+                countdown--;
+                document.getElementById('countdown').textContent = countdown;
+                if (countdown === 0) {
+                    clearInterval(countdownInterval);
+                    // Mostrar el ganador con una letra alterada
+                    displayWinner();
+                }
+            }, 1000);
+        }
+
+        function chooseWinner() {
+            const names = document.getElementById('names').value.split('\n').filter(name => name.trim() !== '');
+            if (names.length === 0) {
+                alert('Por favor, introduce algunos nombres.');
+                return;
+            }
+            // Elegir un ganador aleatorio
+            winnerName = names[Math.floor(Math.random() * names.length)];
+        }
+
+        function displayWinner() {
+            // Randomly change a letter in the winner's name to simulate the different font
+            const winnerArray = winnerName.split('');
+            const randomIndex = Math.floor(Math.random() * winnerArray.length);
+            const originalLetter = winnerArray[randomIndex];
+            winnerArray[randomIndex] = `<span style="font-family: 'Courier New', Courier, monospace;">${originalLetter}</span>`;
+            const modifiedWinnerName = winnerArray.join('');
+            document.getElementById('result').innerHTML = `¡El ganador es: ${modifiedWinnerName}!`;
+            document.getElementById('countdown').textContent = '';
+        }
+    </script>
 </body>
 </html>
