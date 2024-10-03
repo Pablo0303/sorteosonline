@@ -82,6 +82,33 @@
         .regalo.tr { top: -30px; right: -30px; } /* Esquina superior derecha */
         .regalo.bl { bottom: -30px; left: -30px; } /* Esquina inferior izquierda */
         .regalo.br { bottom: -30px; right: -30px; } /* Esquina inferior derecha */
+
+        /* Estilos para fuegos artificiales */
+        .firework {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-image: url('https://cdn-icons-png.flaticon.com/512/2931/2931747.png'); /* URL de fuegos artificiales */
+            background-size: contain;
+            background-repeat: no-repeat;
+            z-index: 20; /* Asegurarse de que los fuegos artificiales estén por encima */
+            animation: explode 1s forwards;
+            opacity: 0; /* Ocultar inicialmente */
+        }
+
+        @keyframes explode {
+            0% {
+                opacity: 1;
+                transform: scale(0);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.5);
+            }
+            100% {
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -139,6 +166,28 @@
         function mostrarGanador(ganador) {
             document.getElementById('ganador').innerText = `¡GANADOR! ${ganador}`;
             document.getElementById('ganador').style.display = 'block';
+            mostrarFuegosArtificiales(); // Llamar a la función de fuegos artificiales
+        }
+
+        function mostrarFuegosArtificiales() {
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    crearFuegoArtificial();
+                }, i * 200); // Espaciar los fuegos artificiales
+            }
+        }
+
+        function crearFuegoArtificial() {
+            const firework = document.createElement('div');
+            firework.className = 'firework';
+            firework.style.top = `${Math.random() * (window.innerHeight - 100)}px`;
+            firework.style.left = `${Math.random() * (window.innerWidth - 100)}px`;
+            document.body.appendChild(firework);
+
+            // Eliminar el fuego artificial después de 1 segundo
+            setTimeout(() => {
+                firework.remove();
+            }, 1000);
         }
 
         function reiniciarSorteo() {
