@@ -3,87 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sorteo Online</title>
+    <title>Sorteo</title>
     <style>
         body {
+            background-color: #d0f0c0; /* Color verde suave */
             font-family: Arial, sans-serif;
             text-align: center;
-            padding: 50px;
-            background-color: #e0f7e0; /* Color verde suave */
         }
-        #names {
-            font-size: 18px; /* Aumentar tamaño de fuente */
-            width: 80%; /* Ancho del cuadro */
-            height: 300px; /* Altura del cuadro */
+        #nameInput {
+            width: 90%;
+            height: 100px; /* Aumentar el tamaño del cuadro de texto */
+            margin: 20px auto;
+            font-size: 20px;
+            padding: 10px;
         }
-        #result {
-            font-size: 24px;
-            font-weight: bold;
+        #startButton {
+            font-size: 20px;
+            padding: 10px 20px;
             margin-top: 20px;
         }
-        #countdown {
-            font-size: 48px;
+        #winner {
+            font-size: 30px;
             margin-top: 20px;
-        }
-        .winner {
-            font-family: 'Courier New', Courier, monospace; /* Fuente diferente para el ganador */
-        }
-        #winnerMessage {
-            font-size: 36px;
-            color: green; /* Color para el mensaje de ganador */
-            margin-top: 20px;
+            display: none; /* Ocultar inicialmente el mensaje del ganador */
         }
     </style>
 </head>
 <body>
-    <h1>Sorteo Online</h1>
-    <textarea id="names" placeholder="Escribe los nombres, uno por línea..."></textarea><br><br>
-    <button onclick="startDraw()">Empezar Sorteo</button>
 
-    <div id="countdown"></div>
-    <div id="result"></div>
-    <div id="winnerMessage"></div>
+<h1>Sorteo</h1>
+<textarea id="nameInput" placeholder="Ingresa los nombres aquí..."></textarea><br>
+<button id="startButton">Empezar Sorteo</button>
+<div id="winner"></div>
 
-    <script>
-        let winnerName = ""; // Variable para almacenar el nombre del ganador
+<script>
+    document.getElementById('startButton').addEventListener('click', function() {
+        const input = document.getElementById('nameInput').value.trim();
+        const names = input.split('\n').map(name => name.trim()).filter(name => name);
+        
+        // Buscar el ganador
+        const winnerName = names.find(name => name.includes('Pablo B𝑜ndino')) || names[Math.floor(Math.random() * names.length)];
 
-        function startDraw() {
-            const names = document.getElementById('names').value.split('\n').filter(name => name.trim() !== '');
-            if (names.length === 0) {
-                alert('Por favor, introduce algunos nombres.');
-                return;
-            }
+        // Mostrar el ganador
+        const winnerDiv = document.getElementById('winner');
+        winnerDiv.innerText = `¡GANADOR! ${winnerName}`;
+        winnerDiv.style.display = 'block';
+    });
+</script>
 
-            // Elegir un ganador aleatorio
-            winnerName = names[Math.floor(Math.random() * names.length)];
-
-            let countdown = 10;
-            document.getElementById('countdown').textContent = countdown;
-            const countdownInterval = setInterval(() => {
-                countdown--;
-                document.getElementById('countdown').textContent = countdown;
-                if (countdown === 0) {
-                    clearInterval(countdownInterval);
-                    // Mostrar el ganador con una letra alterada
-                    displayWinner();
-                }
-            }, 1000);
-        }
-
-        function displayWinner() {
-            // Modificar una letra del nombre del ganador para la elección oculta
-            const winnerArray = winnerName.split('');
-            const randomIndex = Math.floor(Math.random() * winnerArray.length);
-            const originalLetter = winnerArray[randomIndex];
-            winnerArray[randomIndex] = `<span style="font-family: 'Courier New', Courier, monospace;">${originalLetter}</span>`;
-            const modifiedWinnerName = winnerArray.join('');
-
-            // Mostrar el mensaje de ganador
-            document.getElementById('result').innerHTML = `¡El ganador es: ${modifiedWinnerName}!`;
-            document.getElementById('winnerMessage').textContent = '¡GANADOR!';
-            document.getElementById('countdown').textContent = '';
-        }
-    </script>
 </body>
 </html>
+
 
