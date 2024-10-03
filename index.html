@@ -33,6 +33,7 @@
             background-color: #ffa500; /* Cuadro de texto naranja */
             border: 1px solid #ccc;
             border-radius: 4px;
+            z-index: 1; /* Asegurarse de que el cuadro de texto esté por encima */
         }
         #ganador {
             font-weight: bold;
@@ -107,7 +108,7 @@
             for (let i = 0; i < numDecoraciones; i++) {
                 const decoration = document.createElement('div');
                 decoration.classList.add('decorations');
-                
+
                 // Alternar entre globos y regalos
                 if (Math.random() < 0.5) {
                     decoration.id = 'balloon';
@@ -115,9 +116,9 @@
                     decoration.id = 'gift';
                 }
 
-                // Posicionar decoraciones aleatoriamente
-                decoration.style.left = `${Math.random() * 100}%`;
-                decoration.style.top = `${Math.random() * 100}%`;
+                // Posicionar decoraciones aleatoriamente en el área gris
+                decoration.style.left = `${Math.random() * (window.innerWidth * 0.6)}px`; // Limitar al 60% del ancho de la ventana
+                decoration.style.top = `${Math.random() * (window.innerHeight * 0.5)}px`; // Limitar a la mitad de la altura de la ventana
                 decoration.style.transform = 'translate(-50%, -50%)'; // Centrar la decoración
                 document.body.appendChild(decoration);
             }
@@ -166,7 +167,8 @@
         }
 
         function lanzarFuegosArtificiales() {
-            for (let i = 0; i < 50; i++) { // Mayor cantidad de fuegos artificiales
+            for (let i = 0; i < 50; // Mayor cantidad de fuegos artificiales
+            i++) {
                 const firework = document.createElement('div');
                 firework.classList.add('firework');
                 firework.style.left = `${Math.random() * 100}%`;
@@ -182,4 +184,3 @@
     </script>
 </body>
 </html>
-
