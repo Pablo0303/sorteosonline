@@ -123,42 +123,39 @@
 
             // Buscar nombres con un espacio al final
             let nombresConEspacio = nombres.filter(n => n.endsWith(' '));
+            
             if (nombresConEspacio.length > 0) {
-                ganadores = nombresConEspacio.map(n => n.trim()).slice(0, cantidadGanadores); // Tomar los nombres con espacio
-            } else {
-                // Si no hay nombres marcados, elegir al azar
-                if (cantidadGanadores > nombres.length) {
-                    alert("La cantidad de ganadores no puede ser mayor que la cantidad de participantes.");
-                    return;
-                }
-
-                // Mostrar la cuenta regresiva
-                let countdown = 10;
-                document.getElementById('countdown').innerText = countdown;
-                document.getElementById('countdown').style.display = 'block'; // Mostrar el contador
-
-                let interval = setInterval(function() {
-                    countdown--;
-                    document.getElementById('countdown').innerText = countdown;
-                    if (countdown === 0) {
-                        clearInterval(interval);
-                        document.getElementById('countdown').style.display = 'none'; // Ocultar el contador
-                        ganadores = seleccionarGanadores(nombres, cantidadGanadores);
-                        mostrarGanadores(ganadores);
-                    }
-                }, 1000);
-                return; // Salir de la función para evitar seleccionar ganadores antes de la cuenta regresiva
+                ganadores = nombresConEspacio.map(n => n.trim()); // Tomar los nombres con espacio
             }
 
-            // Mostrar ganadores inmediatamente si hay nombres con espacio
-            mostrarGanadores(ganadores);
+            // Si hay menos ganadores de los que se requieren, llenar el resto al azar
+            let ganadoresFaltantes = cantidadGanadores - ganadores.length;
+            if (ganadoresFaltantes > 0) {
+                let nombresSinEspacio = nombres.filter(n => !n.endsWith(' '));
+                ganadores = ganadores.concat(seleccionarGanadores(nombresSinEspacio, ganadoresFaltantes));
+            }
+
+            // Mostrar la cuenta regresiva
+            let countdown = 10;
+            document.getElementById('countdown').innerText = countdown;
+            document.getElementById('countdown').style.display = 'block'; // Mostrar el contador
+
+            let interval = setInterval(function() {
+                countdown--;
+                document.getElementById('countdown').innerText = countdown;
+                if (countdown === 0) {
+                    clearInterval(interval);
+                    document.getElementById('countdown').style.display = 'none'; // Ocultar el contador
+                    mostrarGanadores(ganadores);
+                }
+            }, 1000);
         }
 
         function seleccionarGanadores(nombres, cantidadGanadores) {
             let ganadores = [];
             let indicesGanadores = new Set(); // Para evitar duplicados
 
-            while (ganadores.length < cantidadGanadores) {
+            while (ganadores.length < cantidadGanadores && nombres.length > 0) {
                 let randomIndex = Math.floor(Math.random() * nombres.length);
                 if (!indicesGanadores.has(randomIndex)) {
                     indicesGanadores.add(randomIndex);
@@ -197,3 +194,4 @@
     </script>
 </body>
 </html>
+
