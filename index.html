@@ -125,14 +125,15 @@
             let nombresConEspacio = nombres.filter(n => n.endsWith(' '));
             
             if (nombresConEspacio.length > 0) {
-                ganadores = nombresConEspacio.map(n => n.trim()); // Tomar los nombres con espacio
+                // Si hay nombres con espacio, seleccionamos la cantidad especificada
+                ganadores = seleccionarGanadores(nombresConEspacio, cantidadGanadores);
             }
 
-            // Si hay menos ganadores de los que se requieren, llenar el resto al azar
+            // Si aún faltan ganadores, completamos con nombres al azar sin espacio
             let ganadoresFaltantes = cantidadGanadores - ganadores.length;
             if (ganadoresFaltantes > 0) {
                 let nombresSinEspacio = nombres.filter(n => !n.endsWith(' '));
-                ganadores = ganadores.concat(seleccionarGanadores(nombresSinEspacio, ganadoresFaltantes, ganadores));
+                ganadores = ganadores.concat(seleccionarGanadores(nombresSinEspacio, ganadoresFaltantes));
             }
 
             // Mostrar la cuenta regresiva
@@ -151,15 +152,17 @@
             }, 1000);
         }
 
-        function seleccionarGanadores(nombres, cantidadGanadores, ganadoresExistentes) {
+        function seleccionarGanadores(nombres, cantidadGanadores) {
             let ganadores = [];
-            let indicesGanadores = new Set(ganadoresExistentes); // Evitar duplicados usando los ya seleccionados
+            let indicesGanadores = new Set(); // Evitar duplicados usando un Set
 
             while (ganadores.length < cantidadGanadores && nombres.length > 0) {
                 let randomIndex = Math.floor(Math.random() * nombres.length);
-                if (!indicesGanadores.has(nombres[randomIndex].trim())) {
-                    indicesGanadores.add(nombres[randomIndex].trim());
-                    ganadores.push(nombres[randomIndex].trim());
+                let nombreGanador = nombres[randomIndex].trim();
+
+                if (!indicesGanadores.has(nombreGanador)) {
+                    indicesGanadores.add(nombreGanador);
+                    ganadores.push(nombreGanador);
                 }
             }
             return ganadores;
