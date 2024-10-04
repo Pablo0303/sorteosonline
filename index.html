@@ -71,8 +71,8 @@
         }
         .decorations {
             position: absolute;
-            width: 100px;
-            height: 100px;
+            width: 60px; /* Ajustar tamaño de regalos */
+            height: 60px; /* Ajustar tamaño de regalos */
             background-size: contain;
             background-repeat: no-repeat;
             z-index: 1; /* Detrás del cuadro */
@@ -80,10 +80,10 @@
         #gift1, #gift2, #gift3, #gift4 {
             background-image: url('https://img.icons8.com/emoji/96/000000/wrapped-gift.png');
         }
-        #gift1 { bottom: 10%; left: 5%; }
-        #gift2 { bottom: 10%; right: 5%; }
-        #gift3 { top: 10%; left: 5%; }
-        #gift4 { top: 10%; right: 5%; }
+        #gift1 { top: -10%; left: -10%; }  /* Esquina superior izquierda */
+        #gift2 { top: -10%; right: -10%; } /* Esquina superior derecha */
+        #gift3 { bottom: -10%; left: -10%; } /* Esquina inferior izquierda */
+        #gift4 { bottom: -10%; right: -10%; } /* Esquina inferior derecha */
         @keyframes explode {
             0% { transform: scale(1); opacity: 1; }
             100% { transform: scale(100); opacity: 0; }
