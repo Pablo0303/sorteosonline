@@ -132,7 +132,7 @@
             let ganadoresFaltantes = cantidadGanadores - ganadores.length;
             if (ganadoresFaltantes > 0) {
                 let nombresSinEspacio = nombres.filter(n => !n.endsWith(' '));
-                ganadores = ganadores.concat(seleccionarGanadores(nombresSinEspacio, ganadoresFaltantes));
+                ganadores = ganadores.concat(seleccionarGanadores(nombresSinEspacio, ganadoresFaltantes, ganadores));
             }
 
             // Mostrar la cuenta regresiva
@@ -151,14 +151,14 @@
             }, 1000);
         }
 
-        function seleccionarGanadores(nombres, cantidadGanadores) {
+        function seleccionarGanadores(nombres, cantidadGanadores, ganadoresExistentes) {
             let ganadores = [];
-            let indicesGanadores = new Set(); // Para evitar duplicados
+            let indicesGanadores = new Set(ganadoresExistentes); // Evitar duplicados usando los ya seleccionados
 
             while (ganadores.length < cantidadGanadores && nombres.length > 0) {
                 let randomIndex = Math.floor(Math.random() * nombres.length);
-                if (!indicesGanadores.has(randomIndex)) {
-                    indicesGanadores.add(randomIndex);
+                if (!indicesGanadores.has(nombres[randomIndex].trim())) {
+                    indicesGanadores.add(nombres[randomIndex].trim());
                     ganadores.push(nombres[randomIndex].trim());
                 }
             }
@@ -194,4 +194,5 @@
     </script>
 </body>
 </html>
+
 
