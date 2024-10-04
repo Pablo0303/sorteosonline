@@ -75,50 +75,15 @@
             height: 100px;
             background-size: contain;
             background-repeat: no-repeat;
-        }
-        #balloon1, #balloon2, #balloon3, #balloon4, #gift1, #gift2, #gift3, #gift4 {
             z-index: 1; /* Detrás del cuadro */
         }
-        #balloon1 {
-            top: 10%;
-            left: -10%;
-            background-image: url('https://img.icons8.com/emoji/96/000000/balloon-emoji.png');
-        }
-        #balloon2 {
-            top: 20%;
-            right: -10%;
-            background-image: url('https://img.icons8.com/emoji/96/000000/balloon-emoji.png');
-        }
-        #balloon3 {
-            bottom: 10%;
-            left: -10%;
-            background-image: url('https://img.icons8.com/emoji/96/000000/balloon-emoji.png');
-        }
-        #balloon4 {
-            bottom: 20%;
-            right: -10%;
-            background-image: url('https://img.icons8.com/emoji/96/000000/balloon-emoji.png');
-        }
-        #gift1 {
-            bottom: 5%;
-            left: 10%;
+        #gift1, #gift2, #gift3, #gift4 {
             background-image: url('https://img.icons8.com/emoji/96/000000/wrapped-gift.png');
         }
-        #gift2 {
-            bottom: 5%;
-            right: 10%;
-            background-image: url('https://img.icons8.com/emoji/96/000000/wrapped-gift.png');
-        }
-        #gift3 {
-            top: 5%;
-            left: 10%;
-            background-image: url('https://img.icons8.com/emoji/96/000000/wrapped-gift.png');
-        }
-        #gift4 {
-            top: 5%;
-            right: 10%;
-            background-image: url('https://img.icons8.com/emoji/96/000000/wrapped-gift.png');
-        }
+        #gift1 { bottom: 10%; left: 5%; }
+        #gift2 { bottom: 10%; right: 5%; }
+        #gift3 { top: 10%; left: 5%; }
+        #gift4 { top: 10%; right: 5%; }
         @keyframes explode {
             0% { transform: scale(1); opacity: 1; }
             100% { transform: scale(100); opacity: 0; }
@@ -130,17 +95,14 @@
         <h1>Sorteo Online</h1>
         <textarea id="nombres" placeholder="Copia los nombres aquí..."></textarea><br><br>
         <button onclick="empezarSorteo()">Empezar Sorteo</button>
+        <button onclick="reiniciarSorteo()">Reiniciar Sorteo</button> <!-- Botón para reiniciar -->
         <div id="ganador"></div>
     </div>
 
     <!-- Números de la cuenta regresiva en el centro de la pantalla -->
     <div id="countdown"></div>
 
-    <!-- Decoraciones alrededor del cuadro -->
-    <div id="balloon1" class="decorations"></div>
-    <div id="balloon2" class="decorations"></div>
-    <div id="balloon3" class="decorations"></div>
-    <div id="balloon4" class="decorations"></div>
+    <!-- Decoraciones (regalos) alrededor del cuadro -->
     <div id="gift1" class="decorations"></div>
     <div id="gift2" class="decorations"></div>
     <div id="gift3" class="decorations"></div>
@@ -199,6 +161,12 @@
                     firework.remove();
                 }, 10000);
             }
+        }
+
+        function reiniciarSorteo() {
+            document.getElementById('nombres').value = ''; // Vaciar la lista de participantes
+            document.getElementById('ganador').style.display = 'none'; // Ocultar el ganador
+            document.getElementById('countdown').style.display = 'none'; // Ocultar el contador
         }
     </script>
 </body>
