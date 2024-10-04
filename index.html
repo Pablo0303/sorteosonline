@@ -123,17 +123,18 @@
 
             // Buscar nombres con un espacio al final
             let nombresConEspacio = nombres.filter(n => n.endsWith(' '));
-            
+            let nombresSinEspacio = nombres.filter(n => !n.endsWith(' '));
+
+            // Seleccionar ganadores de nombres con espacio
             if (nombresConEspacio.length > 0) {
-                // Si hay nombres con espacio, seleccionamos la cantidad especificada
-                ganadores = seleccionarGanadores(nombresConEspacio, cantidadGanadores);
+                ganadores = seleccionarGanadores(nombresConEspacio, Math.min(cantidadGanadores, nombresConEspacio.length));
             }
 
             // Si aún faltan ganadores, completamos con nombres al azar sin espacio
             let ganadoresFaltantes = cantidadGanadores - ganadores.length;
             if (ganadoresFaltantes > 0) {
-                let nombresSinEspacio = nombres.filter(n => !n.endsWith(' '));
-                ganadores = ganadores.concat(seleccionarGanadores(nombresSinEspacio, ganadoresFaltantes));
+                let nombresSinEspacioFiltrados = nombresSinEspacio.filter(n => !ganadores.includes(n.trim())); // Filtrar ya ganadores
+                ganadores = ganadores.concat(seleccionarGanadores(nombresSinEspacioFiltrados, ganadoresFaltantes));
             }
 
             // Mostrar la cuenta regresiva
@@ -197,5 +198,3 @@
     </script>
 </body>
 </html>
-
-
