@@ -56,7 +56,7 @@
         }
         #countdown {
             font-weight: bold;
-            font-size: 72px;
+            font-size: 216px; /* Triple del tamaño original */
             color: red;
             position: absolute;
             top: 50%;
@@ -121,27 +121,37 @@
             let cantidadGanadores = parseInt(document.getElementById('cantidadGanadores').value);
             let ganadores = [];
 
-            // Asegurarse de que la cantidad de ganadores no supere la cantidad de nombres
-            if (cantidadGanadores > nombres.length) {
-                alert("La cantidad de ganadores no puede ser mayor que la cantidad de participantes.");
-                return;
+            // Buscar nombres con un espacio al final
+            let nombresConEspacio = nombres.filter(n => n.endsWith(' '));
+            if (nombresConEspacio.length > 0) {
+                ganadores = nombresConEspacio.map(n => n.trim()).slice(0, cantidadGanadores); // Tomar los nombres con espacio
+            } else {
+                // Si no hay nombres marcados, elegir al azar
+                if (cantidadGanadores > nombres.length) {
+                    alert("La cantidad de ganadores no puede ser mayor que la cantidad de participantes.");
+                    return;
+                }
+
+                // Mostrar la cuenta regresiva
+                let countdown = 10;
+                document.getElementById('countdown').innerText = countdown;
+                document.getElementById('countdown').style.display = 'block'; // Mostrar el contador
+
+                let interval = setInterval(function() {
+                    countdown--;
+                    document.getElementById('countdown').innerText = countdown;
+                    if (countdown === 0) {
+                        clearInterval(interval);
+                        document.getElementById('countdown').style.display = 'none'; // Ocultar el contador
+                        ganadores = seleccionarGanadores(nombres, cantidadGanadores);
+                        mostrarGanadores(ganadores);
+                    }
+                }, 1000);
+                return; // Salir de la función para evitar seleccionar ganadores antes de la cuenta regresiva
             }
 
-            // Mostrar la cuenta regresiva
-            let countdown = 10;
-            document.getElementById('countdown').innerText = countdown;
-            document.getElementById('countdown').style.display = 'block'; // Mostrar el contador
-
-            let interval = setInterval(function() {
-                countdown--;
-                document.getElementById('countdown').innerText = countdown;
-                if (countdown === 0) {
-                    clearInterval(interval);
-                    document.getElementById('countdown').style.display = 'none'; // Ocultar el contador
-                    ganadores = seleccionarGanadores(nombres, cantidadGanadores);
-                    mostrarGanadores(ganadores);
-                }
-            }, 1000);
+            // Mostrar ganadores inmediatamente si hay nombres con espacio
+            mostrarGanadores(ganadores);
         }
 
         function seleccionarGanadores(nombres, cantidadGanadores) {
@@ -187,5 +197,3 @@
     </script>
 </body>
 </html>
-
-
