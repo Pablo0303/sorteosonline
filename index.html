@@ -93,6 +93,17 @@
             0% { transform: scale(1); opacity: 1; }
             100% { transform: scale(100); opacity: 0; }
         }
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -173,6 +184,16 @@
             document.getElementById('ganador').innerText = `¡GANADORES! ${ganadores.join(', ')}`;
             document.getElementById('ganador').style.display = 'block';
             lanzarFuegosArtificiales();
+
+            // Agregar botón de cerrar
+            const closeButton = document.createElement('button');
+            closeButton.innerText = '✖ Cerrar';
+            closeButton.className = 'close-button';
+            closeButton.onclick = function() {
+                document.getElementById('ganador').style.display = 'none'; // Ocultar el ganador
+                closeButton.remove(); // Eliminar el botón
+            };
+            document.getElementById('ganador').appendChild(closeButton);
         }
 
         function lanzarFuegosArtificiales() {
