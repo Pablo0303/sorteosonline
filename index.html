@@ -41,7 +41,7 @@
         }
         #ganador {
             font-weight: bold;
-            font-size: 48px;
+            font-size: 24px; /* Tamaño de letra reducido */
             color: green;
             margin-top: 20px;
             display: none; /* Oculto al inicio */
@@ -53,6 +53,7 @@
             background-color: white;
             padding: 20px;
             border-radius: 10px;
+            text-align: left; /* Alinear texto a la izquierda */
         }
         #countdown {
             font-weight: bold;
@@ -100,9 +101,11 @@
             background-color: red;
             color: white;
             border: none;
-            border-radius: 4px;
-            padding: 5px 10px;
+            border-radius: 50%;
+            width: 30px; /* Ajustar tamaño del botón */
+            height: 30px; /* Ajustar tamaño del botón */
             cursor: pointer;
+            font-size: 20px; /* Tamaño de la letra del botón */
         }
     </style>
 </head>
@@ -181,13 +184,13 @@
         }
 
         function mostrarGanadores(ganadores) {
-            document.getElementById('ganador').innerText = `¡GANADORES! ${ganadores.join(', ')}`;
+            document.getElementById('ganador').innerHTML = ganadores.map(g => `${g}`).join('<br>'); // Mostrar cada ganador en una línea
             document.getElementById('ganador').style.display = 'block';
             lanzarFuegosArtificiales();
 
             // Agregar botón de cerrar
             const closeButton = document.createElement('button');
-            closeButton.innerText = '✖ Cerrar';
+            closeButton.innerText = '✖'; // Solo mostrar la X
             closeButton.className = 'close-button';
             closeButton.onclick = function() {
                 document.getElementById('ganador').style.display = 'none'; // Ocultar el ganador
@@ -212,10 +215,12 @@
         }
 
         function reiniciarSorteo() {
-            document.getElementById('nombres').value = ''; // Vaciar la lista de participantes
-            document.getElementById('ganador').style.display = 'none'; // Ocultar el ganador
-            document.getElementById('countdown').style.display = 'none'; // Ocultar el contador
+            document.getElementById('nombres').value = '';
+            document.getElementById('cantidadGanadores').value = 1; // Reiniciar cantidad de ganadores a 1
+            document.getElementById('ganador').style.display = 'none'; // Ocultar ganadores
+            document.getElementById('countdown').style.display = 'none'; // Ocultar contador
         }
     </script>
 </body>
 </html>
+
