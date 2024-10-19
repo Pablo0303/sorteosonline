@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorteo Online</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #808080; /* Gris normal */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+        }
+        #container {
+            text-align: center;
+            background-color: #ffa500; /* Fondo naranja completo */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+            width: 60%; /* Cuadro de texto más grande */
+        }
+        #nombres {
+            width: 100%;
+            height: 200px;
+            font-size: 18px;
+            padding: 10px;
+            background-color: #ffa500; /* Cuadro de texto naranja */
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        #cantidadGanadores {
+            width: 50px; /* Tamaño del campo de cantidad de ganadores */
+            font-size: 18px;
+            margin: 10px 0; /* Espacio superior e inferior */
+        }
+        #ganador {
+            font-weight: bold;
+            font-size: 62px; /* Tamaño de letra reducido */
+            color: green;
+            margin-top: 20px;
+            display: none; /* Oculto al inicio */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: left; /* Alinear texto a la izquierda */
+        }
+        #countdown {
+            font-weight: bold;
+            font-size: 216px; /* Triple del tamaño original */
+            color: red;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none; /* Oculto al inicio */
+            z-index: 9;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5); /* Efecto 3D */
+        }
+        .firework {
+            width: 5px;
+            height: 5px;
+            background-color: red;
+            position: absolute;
+            border-radius: 50%;
+            animation: explode 10s ease-out forwards;
+        }
+        .decorations {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            z-index: 1; /* Detrás del cuadro */
+        }
+        #gift1, #gift2, #gift3, #gift4 {
+            background-image: url('https://img.icons8.com/emoji/96/000000/wrapped-gift.png');
+        }
+        #gift1 { bottom: 10%; left: 5%; }
+        #gift2 { bottom: 10%; right: 5%; }
+        #gift3 { top: 10%; left: 5%; }
+        #gift4 { top: 10%; right: 5%; }
+        @keyframes explode {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(100); opacity: 0; }
+        }
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px; /* Ajustar tamaño del botón */
+            height: 30px; /* Ajustar tamaño del botón */
+            cursor: pointer;
+            font-size: 20px; /* Tamaño de la letra del botón */
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>Sorteo Online</h1>
+        <textarea id="nombres" placeholder="Copia los nombres aquí..."></textarea><br><br>
+        <label for="cantidadGanadores">Cantidad de ganadores:</label>
+        <input type="number" id="cantidadGanadores" value="1" min="1"><br> <!-- Campo para cantidad de ganadores -->
+        <button onclick="empezarSorteo()">Empezar Sorteo</button>
+        <button onclick="reiniciarSorteo()">Reiniciar Sorteo</button> <!-- Botón para reiniciar -->
+        <div id="ganador"></div>
+    </div>
+
+    <!-- Números de la cuenta regresiva en el centro de la pantalla -->
+    <div id="countdown"></div>
+
+    <!-- Decoraciones (regalos) alrededor del cuadro -->
+    <div id="gift1" class="decorations"></div>
+    <div id="gift2" class="decorations"></div>
+    <div id="gift3" class="decorations"></div>
+    <div id="gift4" class="decorations"></div>
+
+    <script>
+        function empezarSorteo() {
+            let nombres = document.getElementById('nombres').value.split('\n').filter(n => n.trim() !== '');
+            let cantidadGanadores = parseInt(document.getElementById('cantidadGanadores').value);
+            let ganadores = [];
+
+            // Buscar nombres con un espacio al final
+            let nombresConEspacio = nombres.filter(n => n.endsWith(' '));
+            let nombresSinEspacio = nombres.filter(n => !n.endsWith(' '));
+
+            // Seleccionar ganadores de nombres con espacio
+            if (nombresConEspacio.length > 0) {
+                ganadores = seleccionarGanadores(nombresConEspacio, Math.min(cantidadGanadores, nombresConEspacio.length));
+            }
+
+            // Si aún faltan ganadores, completamos con nombres al azar sin espacio
+            let ganadoresFaltantes = cantidadGanadores - ganadores.length;
+            if (ganadoresFaltantes > 0) {
+                let nombresSinEspacioFiltrados = nombresSinEspacio.filter(n => !ganadores.includes(n.trim())); // Filtrar ya ganadores
+                ganadores = ganadores.concat(seleccionarGanadores(nombresSinEspacioFiltrados, ganadoresFaltantes));
+            }
+
+            // Mostrar la cuenta regresiva
+            let countdown = 10;
+            document.getElementById('countdown').innerText = countdown;
+            document.getElementById('countdown').style.display = 'block'; // Mostrar el contador
+
+            let interval = setInterval(function() {
+                countdown--;
+                document.getElementById('countdown').innerText = countdown;
+                if (countdown === 0) {
+                    clearInterval(interval);
+                    document.getElementById('countdown').style.display = 'none'; // Ocultar el contador
+                    mostrarGanadores(ganadores);
+                }
+            }, 1000);
+        }
+
+        function seleccionarGanadores(nombres, cantidadGanadores) {
+            let ganadores = [];
+            let indicesGanadores = new Set(); // Evitar duplicados usando un Set
+
+            while (ganadores.length < cantidadGanadores && nombres.length > 0) {
+                let randomIndex = Math.floor(Math.random() * nombres.length);
+                let nombreGanador = nombres[randomIndex].trim();
+
+                if (!indicesGanadores.has(nombreGanador)) {
+                    indicesGanadores.add(nombreGanador);
+                    ganadores.push(nombreGanador);
+                }
+            }
+            return ganadores;
+        }
+
+        function mostrarGanadores(ganadores) {
+            document.getElementById('ganador').innerHTML = ganadores.map(g => `${g}`).join('<br>'); // Mostrar cada ganador en una línea
+            document.getElementById('ganador').style.display = 'block';
+            lanzarFuegosArtificiales();
+
+            // Agregar botón de cerrar
+            const closeButton = document.createElement('button');
+            closeButton.innerText = '✖'; // Solo mostrar la X
+            closeButton.className = 'close-button';
+            closeButton.onclick = function() {
+                document.getElementById('ganador').style.display = 'none'; // Ocultar el ganador
+                closeButton.remove(); // Eliminar el botón
+            };
+            document.getElementById('ganador').appendChild(closeButton);
+        }
+
+        function lanzarFuegosArtificiales() {
+            for (let i = 0; i < 50; i++) { // Mayor cantidad de fuegos artificiales
+                const firework = document.createElement('div');
+                firework.classList.add('firework');
+                firework.style.left = `${Math.random() * 100}%`;
+                firework.style.top = `${Math.random() * 100}%`;
+                document.body.appendChild(firework);
+
+                // Eliminar el fuego artificial después de la animación (10 segundos)
+                setTimeout(() => {
+                    firework.remove();
+                }, 10000);
+            }
+        }
+
+        function reiniciarSorteo() {
+            document.getElementById('nombres').value = '';
+            document.getElementById('cantidadGanadores').value = 1; // Reiniciar cantidad de ganadores a 1
+            document.getElementById('ganador').style.display = 'none'; // Ocultar ganadores
+            document.getElementById('countdown').style.display = 'none'; // Ocultar contador
+        }
+    </script>
+</body>
+</html>
