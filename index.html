@@ -135,21 +135,8 @@
             let cantidadGanadores = parseInt(document.getElementById('cantidadGanadores').value);
             let ganadores = [];
 
-            // Buscar nombres con un espacio al final
-            let nombresConEspacio = nombres.filter(n => n.endsWith(' '));
-            let nombresSinEspacio = nombres.filter(n => !n.endsWith(' '));
-
-            // Seleccionar ganadores de nombres con espacio
-            if (nombresConEspacio.length > 0) {
-                ganadores = seleccionarGanadores(nombresConEspacio, Math.min(cantidadGanadores, nombresConEspacio.length));
-            }
-
-            // Si aún faltan ganadores, completamos con nombres al azar sin espacio
-            let ganadoresFaltantes = cantidadGanadores - ganadores.length;
-            if (ganadoresFaltantes > 0) {
-                let nombresSinEspacioFiltrados = nombresSinEspacio.filter(n => !ganadores.includes(n.trim())); // Filtrar ya ganadores
-                ganadores = ganadores.concat(seleccionarGanadores(nombresSinEspacioFiltrados, ganadoresFaltantes));
-            }
+            // Seleccionar ganadores al azar
+            ganadores = seleccionarGanadores(nombres, cantidadGanadores);
 
             // Mostrar la cuenta regresiva
             let countdown = 10;
